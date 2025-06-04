@@ -32,8 +32,7 @@ async def send_to_api(question: str) -> dict:
         try:
             response = await client.get(
                 "/ask",
-                params={"question": question},
-                timeout=10
+                params={"question": question}
             )
             response.raise_for_status()
             return response.json()
@@ -51,12 +50,7 @@ async def handle_message(message: Message):
         await message.answer("Ошибка при обработке запроса. Попробуйте позже.")
         return
 
-    if not response.get("results"):
-        await message.answer("Не нашел подходящего ответа. Попробуйте переформулировать вопрос.")
-        return
-
-    await message.answer("Service answer")
-
+    await message.answer(response["answer"])
 
 async def main() -> None:
     bot = Bot(token=TOKEN)
